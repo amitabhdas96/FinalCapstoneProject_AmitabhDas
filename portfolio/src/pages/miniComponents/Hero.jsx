@@ -18,7 +18,7 @@ const Hero = () => {
   useEffect(() => {
     const getMyProfile = async () => {
       const { data } = await axios.get(
-        "http://localhost:4000/api/v1/user/portfolio/me",
+        "https://mern-stack-portfolio-backend-code.onrender.com/api/v1/user/portfolio/me",
         { withCredentials: true }
       );
       setUser(data.user);
@@ -33,12 +33,12 @@ const Hero = () => {
       </div>
       <h1 className="overflow-x-hidden text-[1.3rem] sm:text-[1.75rem] 
       md:text-[2.2rem] lg:text-[2.8rem] tracking-[2px] mb-4">
-        Hey, I'm Zeeshan
+        Hey, I'm Amitabh
       </h1>
       <h1 className="text-tubeLight-effect overflow-x-hidden text-[1.3rem] 
       sm:text-[1.75rem] md:text-[2.2rem] lg:text-[2.8rem] tracking-[15px]">
         <Typewriter
-          words={["FULLSTACK DEVELOPER", "YOUTUBER", "FREELANCER"]}
+          words={["FULLSTACK DEVELOPER", "PEGA SOLUTION ARCHITECT", "LOW CODE APP CONSULTANT", "PRESALES CONSULTANT"]}
           loop={50}
           cursor
           typeSpeed={70}

@@ -32,22 +32,15 @@ const About = () => {
           </div>
           <div className="flex justify-center flex-col tracking-[1px] text-xl gap-5">
             <p>
-              My name is Zeeshan, but my followers call me Zeeshu. I will
-              graduate in Software Engineering from SMIU around 2024. I work as
-              a web developer and freelancer. My hobbies include watching
-              movies, series, playing video games, and occasionally cooking.
+            Amitabh has over 15+ years of IT industry experience across multiple countries and in various roles for major clients in the Finance, Insurance & Government sectors. 
             </p>
             <p>
-              I have interests not only in technology but also in movies,
-              series, video games, and cooking. I excel in meeting deadlines for
-              my work.
+            He has experience in technical solution architecture, integration design, security protocols, data privacy regulations, and leading multiple development teams. He is skilled in Pega technologies, has PCLSA certification, and has hands-on experience with the latest versions. 
             </p>
           </div>
         </div>
         <p className="tracking-[1px] text-xl">
-          My dedication and perseverance in timely delivery of work are integral
-          to me. I maintain the courage to face any challenges for extended
-          periods.
+        He has been actively involved in Pega COE activities, Pega Re-Sales activities, cross-functional team collaboration, guiding clients, providing direction while requirement gathering, coaching teams, and overall growth of Pega Practice.
         </p>
       </div>
     </div>
