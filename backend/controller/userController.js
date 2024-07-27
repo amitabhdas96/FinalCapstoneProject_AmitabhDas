@@ -10,68 +10,78 @@ export const register = catchAsyncErrors(async (req, res, next) => {
   if (!req.files || Object.keys(req.files).length === 0) {
     return next(new ErrorHandler("Avatar Required!", 400));
   }
-  const { avatar, resume } = req.files;
+  try {
+    const { avatar, resume } = req.files;
 
-  //POSTING AVATAR
-  const cloudinaryResponseForAvatar = await cloudinary.uploader.upload(
-    avatar.tempFilePath,
-    { folder: "PORTFOLIO AVATAR" }
-  );
-  if (!cloudinaryResponseForAvatar || cloudinaryResponseForAvatar.error) {
-    console.error(
-      "Cloudinary Error:",
-      cloudinaryResponseForAvatar.error || "Unknown Cloudinary error"
+    //POSTING AVATAR
+    const cloudinaryResponseForAvatar = await cloudinary.uploader.upload(
+      avatar.tempFilePath,
+      { folder: "PORTFOLIO AVATAR" }
     );
-    return next(new ErrorHandler("Failed to upload avatar to Cloudinary", 500));
-  }
+    if (!cloudinaryResponseForAvatar || cloudinaryResponseForAvatar.error) {
+      console.error(
+        "Cloudinary Error:",
+        cloudinaryResponseForAvatar.error || "Unknown Cloudinary error"
+      );
+      return next(
+        new ErrorHandler("Failed to upload avatar to Cloudinary", 500)
+      );
+    }
 
-  //POSTING RESUME
-  const cloudinaryResponseForResume = await cloudinary.uploader.upload(
-    resume.tempFilePath,
-    { folder: "PORTFOLIO RESUME" }
-  );
-  if (!cloudinaryResponseForResume || cloudinaryResponseForResume.error) {
-    console.error(
-      "Cloudinary Error:",
-      cloudinaryResponseForResume.error || "Unknown Cloudinary error"
+    //POSTING RESUMEs
+    const cloudinaryResponseForResume = await cloudinary.uploader.upload(
+      resume.tempFilePath,
+      { folder: "PORTFOLIO RESUME" }
     );
-    return next(new ErrorHandler("Failed to upload resume to Cloudinary", 500));
+
+    if (!cloudinaryResponseForResume || cloudinaryResponseForResume.error) {
+      console.error(
+        "Cloudinary Error:",
+        cloudinaryResponseForResume.error || "Unknown Cloudinary error"
+      );
+      return next(
+        new ErrorHandler("Failed to upload resume to Cloudinary", 500)
+      );
+    }
+    const {
+      fullName,
+      email,
+      phone,
+      aboutMe,
+      password,
+      portfolioURL,
+      githubURL,
+      instagramURL,
+      twitterURL,
+      facebookURL,
+      linkedInURL,
+    } = req.body;
+    const user = await User.create({
+      fullName,
+      email,
+      phone,
+      aboutMe,
+      password,
+      portfolioURL,
+      githubURL,
+      instagramURL,
+      twitterURL,
+      facebookURL,
+      linkedInURL,
+      avatar: {
+        public_id: cloudinaryResponseForAvatar.public_id, // Set your cloudinary public_id here
+        url: cloudinaryResponseForAvatar.secure_url, // Set your cloudinary secure_url here
+      },
+      resume: {
+        public_id: cloudinaryResponseForResume.public_id, // Set your cloudinary public_id here
+        url: cloudinaryResponseForResume.secure_url, // Set your cloudinary secure_url here
+      },
+    });
+    generateToken(user, "Registered!", 201, res);
+  } catch (e) {
+    console.log(e);
+    next();
   }
-  const {
-    fullName,
-    email,
-    phone,
-    aboutMe,
-    password,
-    portfolioURL,
-    githubURL,
-    instagramURL,
-    twitterURL,
-    facebookURL,
-    linkedInURL,
-  } = req.body;
-  const user = await User.create({
-    fullName,
-    email,
-    phone,
-    aboutMe,
-    password,
-    portfolioURL,
-    githubURL,
-    instagramURL,
-    twitterURL,
-    facebookURL,
-    linkedInURL,
-    avatar: {
-      public_id: cloudinaryResponse.public_id, // Set your cloudinary public_id here
-      url: cloudinaryResponse.secure_url, // Set your cloudinary secure_url here
-    },
-    resume: {
-      public_id: cloudinaryResponse.public_id, // Set your cloudinary public_id here
-      url: cloudinaryResponse.secure_url, // Set your cloudinary secure_url here
-    },
-  });
-  generateToken(user, "Registered!", 201, res);
 });
 
 export const login = catchAsyncErrors(async (req, res, next) => {
@@ -97,7 +107,7 @@ export const logout = catchAsyncErrors(async (req, res, next) => {
       httpOnly: true,
       expires: new Date(Date.now()),
       sameSite: "None",
-      secure: true
+      secure: true,
     })
     .json({
       success: true,
